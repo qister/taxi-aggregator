@@ -10,10 +10,10 @@ const { Search } = Input
 const { Text } = Typography
 const { Meta } = Card
 
-const client = new W3CWebSocket('ws://localhost:8001')
+const client = new WebSocket('ws://localhost:8000')
 
 const App = () => {
-  const [userName, setUserName] = useState('Business')
+  const [userName, setUserName] = useState('Retail')
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [messages, setMessages] = useState<any>([])
   const [searchVal, setSearchVal] = useState('')

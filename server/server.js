@@ -1,18 +1,48 @@
 const WebSocket = require('ws')
 
-const server = new WebSocket.Server({ port: 5000 })
+const server = new WebSocket.Server({ port: 8000 })
+const businessServer = new WebSocket.Server({ port: 8001 })
 
-server.on('connection', (ws) => {
+const clients = new Set()
+const businessClients = new Set()
+
+server.on('connection', (ws, request, client) => {
+  // console.log(ws);
+  // console.log(request)
+  clients.add(ws)
   ws.on('message', (message) => {
     if (message === 'exit') {
       ws.close()
     } else {
-      server.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(message)
-        }
+      businessClients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN)
+        client.send(message)
       })
+    
+      clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN)
+        client.send(message)
+      })
+      
     }
   })
-  ws.send('Hello')
+  ws.send('Hello', null, () => console.log('Client connected'))
+})
+
+businessServer.on('connection', (ws, request, client) => {
+  // console.log(ws);
+  // console.log(request)
+  businessClients.add(ws)
+  ws.on('message', (message) => {
+    if (message === 'exit') {
+      ws.close()
+    } else {
+      businessClients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN)
+        client.send(message)
+      })
+      
+    }
+  })
+  ws.send('Hello', null, () => console.log('Business Client connected'))
 })
