@@ -14,6 +14,7 @@ server.on('connection', (ws, request, client) => {
     if (message === 'exit') {
       ws.close()
     } else {
+
       businessClients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN)
         client.send(message)
@@ -30,8 +31,7 @@ server.on('connection', (ws, request, client) => {
 })
 
 businessServer.on('connection', (ws, request, client) => {
-  // console.log(ws);
-  // console.log(request)
+
   businessClients.add(ws)
   ws.on('message', (message) => {
     if (message === 'exit') {
