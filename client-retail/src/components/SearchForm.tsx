@@ -85,7 +85,7 @@ export const SearchForm = () => {
   const handleClick = (e: any) => {
     e.preventDefault()
 
-    for( let i = 0; i < 5; i++) {
+    for( let i = 0; i < 3; i++) {
       setTimeout( () => {
         client.send(
           JSON.stringify({

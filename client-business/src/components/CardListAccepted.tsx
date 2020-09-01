@@ -7,15 +7,22 @@ import { useEffect } from 'react'
 import { TestCard } from './TestCard'
 import { logDOM } from '@testing-library/react'
 
-// import {client} from '../Connections'
+import {client} from '../Connections'
 import { TestGridCard } from './TestGridCard'
+import { TestGridCardAccepted } from './TestGridCardAccepted'
 import { connect } from 'react-redux'
+import { AnyPtrRecord } from 'dns'
+
+console.log('client: ', client);
+
+
+const { Search } = Input
+const { Text } = Typography
+const { Meta } = Card
 
 // const client = new W3CWebSocket('ws://localhost:8001')
 
-const CardList_ = (props: any) => {
-  console.log('CardList Props: ', props)
-
+const CardListAccepted_ = (props: any) => {
   const [userName, setUserName] = useState('Retail')
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [messages, setMessages] = useState<any>([])
@@ -26,12 +33,16 @@ const CardList_ = (props: any) => {
   // const [phone, setPhone] = useState('')
 
   useEffect(() => {
+    setMessages( (prev: any) => [...prev, ...props.orders])
+
     // client.onopen = () => {
-    //   console.log('connected 2')
+    //   console.log('connected 1')
     // }
     // client.onmessage = (message: any) => {
     //   console.log('message', message)
+
     //   console.log('message data', message.data)
+
     //   const messageParsed = JSON.parse(message.data)
     //   const dataFromServer: any = messageParsed.data
     //   console.log('got reply! ', dataFromServer)
@@ -44,25 +55,24 @@ const CardList_ = (props: any) => {
     //     ])
     //   }
     // }
+
   }, [])
 
   return (
     <>
-      {/* <TestGridCard /> */}
 
-      {
-        props.orders
-          .map((item: any, index: number) => {
-            const { from, to, phone, date } = item
+{/* <TestGridCardAccepted /> */}
 
-            // console.log(typeof date)
-            const locale = new Date(date).toLocaleTimeString()
-            console.log(locale)
+      {messages.map((item: any, index: number) => {
+        const { from, to, phone, date } = item
 
-            return <TestGridCard key={index} {...{ from, to, phone, date }} />
-            // return <TestCard key={index} {...{ from, to, phone, date }} />
-          })
-          .reverse()}
+        // console.log(typeof date)
+        const locale = new Date(date).toLocaleTimeString()
+        console.log(locale)
+
+        return <TestGridCardAccepted key={index} {...{ from, to, phone, date }} />
+        // return <TestCard key={index} {...{ from, to, phone, date }} />
+      }).reverse()}
     </>
   )
 }
@@ -71,4 +81,4 @@ const mapStateToProps = (state: any) => ({
   orders: state.orders,
 })
 
-export const CardList = connect(mapStateToProps, null)(CardList_)
+export const CardListAccepted = connect(mapStateToProps, null)(CardListAccepted_)

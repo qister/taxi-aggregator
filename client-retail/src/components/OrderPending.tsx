@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -85,6 +85,29 @@ const useStyles = makeStyles(() =>
 )
 
 export const PendingCard = () => {
+  const [status, setStatus] = useState('ждем ответа')
+
+  useEffect(() => {
+    // client.onopen = () => {
+    //   console.log('connected')
+    // }
+    client.onmessage = (message: any) => {
+      console.log('message', message)
+
+      // console.log('message data', message.data)
+
+      const messageParsed = JSON.parse(message.data)
+      console.log('message parsed', messageParsed);
+      
+      const dataFromServer: any = messageParsed.data
+      console.log('got reply! ', dataFromServer)
+      if (messageParsed.type === 'message') {
+        setStatus(messageParsed.msg)
+      }
+    }
+
+  }, [])
+  
   const classes = useStyles()
 
   return (
@@ -109,15 +132,6 @@ export const PendingCard = () => {
             </Typography>
           </CardContent>
 
-          {/* <CardContent className={classes.item}>
-            <Typography variant='subtitle1' color='textSecondary'>
-              ⠀
-            </Typography>
-            <Typography component='h5' variant='h5'>
-              →
-            </Typography>
-          </CardContent> */}
-
           <CardContent className={classes.item}>
             <Typography variant='subtitle1' color='textSecondary'>
               Куда
@@ -141,7 +155,7 @@ export const PendingCard = () => {
             Статус
           </Typography>
           <Typography component='h5' variant='h5'>
-            Ищем водителя
+            {status}
           </Typography>
         </CardContent>
         <CardContent className={classes.item}>

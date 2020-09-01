@@ -8,23 +8,29 @@ import DoneIcon from '@material-ui/icons/Done'
 import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 
+import {client} from '../Connections'
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       padding: '1rem',
       margin: '1rem',
-      display: 'flex',
+      // display: 'flex',
       animationDuration: '2s',
       animation: `$myEffect`,
     },
     details: {
       display: 'flex',
-
+      
+      // flexDirection: 'row'
       // alignItems: 'flex-start',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
     },
     item: {
-      flex: '1 0 auto',
+      // flex: '0 0 auto',
+      flexGrow: 0,
+      flexBasis: 'auto'
+
     },
     cover: {
       width: 151,
@@ -52,56 +58,24 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-const useStylesAnim = makeStyles(() =>
-  createStyles({
-    root: {
-      padding: '1rem',
-      margin: '1rem',
-      display: 'flex',
-    },
-    details: {
-      display: 'flex',
-
-      // alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    date: {
-      flex: '1 0 auto',
-    },
-
-    from: {
-      flex: '1 0 auto',
-    },
-    to: {
-      flex: '1 0 auto',
-    },
-    cover: {
-      width: 151,
-    },
-    controls: {
-      display: 'flex',
-      alignItems: 'center',
-      // paddingLeft: theme.spacing(1),
-      // paddingBottom: theme.spacing(1),
-    },
-    playIcon: {
-      height: 38,
-      width: 38,
-    },
-    '@keyframes Appear': {},
-  }),
-)
-
-// const getDate = () => {
-//   return new Date(Date.now()).toLocaleTimeString('ru-RU')
-// }
 
 export const TestCard = ({ date }: any) => {
   const classes = useStyles()
 
+  const acceptOrder = () => {
+    client.send(
+      JSON.stringify({
+        type: 'message',
+        msg: 'order accepted',
+      
+      }),
+    )
+  }
+
   return (
     <Card className={classes.root}>
       <div className={classes.details}>
+
         <CardContent className={classes.item}>
           <Typography variant='subtitle1' color='textSecondary'>
             ⠀
@@ -152,7 +126,7 @@ export const TestCard = ({ date }: any) => {
             Действия
           </Typography>
 
-          <IconButton size='small'>
+          <IconButton size='small' onClick={acceptOrder}>
             <DoneIcon />
           </IconButton>
           <IconButton size='small'>

@@ -14,7 +14,7 @@ const App = () => {
 
   return (
     <>
-    {/* <SearchForm/> */}
+    <SearchForm/>
     <PendingCard />
     </>
   )
