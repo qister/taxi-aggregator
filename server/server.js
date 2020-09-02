@@ -10,16 +10,18 @@ server.on('connection', (ws, request, client) => {
   // console.log(ws);
   // console.log(request)
   clients.add(ws)
+  let id = 1
   ws.on('message', (message) => {
     if (message === 'exit') {
       ws.close()
     } else {
+      const parsedMessage = JSON.parse(message)
+      const newMessage = {...parsedMessage, data: {...parsedMessage.data, id}}
+      id++
+      console.log(newMessage)
+      const nextMessage = JSON.stringify(newMessage)
       businessClients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) client.send(message)
-      })
-
-      clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) client.send(message)
+        if (client.readyState === WebSocket.OPEN) client.send(nextMessage)
       })
     }
   })

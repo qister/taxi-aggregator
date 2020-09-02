@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -19,11 +19,9 @@ const useStyles = makeStyles(() =>
       flexGrow: 1,
       animationDuration: '2s',
       animation: `$myEffect`,
-      'background-color': 'Aquamarine',
     },
     details: {
       // display: 'flex',
-
       // alignItems: 'flex-start',
       // justifyContent: 'center',
     },
@@ -38,47 +36,66 @@ const useStyles = makeStyles(() =>
       },
       '100%': {
         // opacity: 1,
-        'background-color': 'Aquamarine',
+        'background-color': 'white',
       },
     },
   }),
 )
 
-export const TestGridCardAccepted = ({ date }: any) => {
+export const TestGridCardAccepted = ({ from, to, phone, date, id }: any) => {
   const classes = useStyles()
 
-  const acceptOrder = () => {
-    client.send(
-      JSON.stringify({
-        type: 'message',
-        msg: 'order accepted',
-      }),
-    )
-  }
+  // const acceptOrder = () => {
+  //   client.send(
+  //     JSON.stringify({
+  //       type: 'message',
+  //       msg: 'order accepted',
+  //     }),
+  //   )
+  // }
+  const [timeDifference, setTimeDifference] = useState('Времени прошло')
+
+  useEffect(() => {
+    setInterval(() => {
+      const now = new Date()
+      const timeOrderAccepted = new Date(date)
+
+      const diff = new Date(
+        now.getTime() - timeOrderAccepted.getTime(),
+      ).toLocaleTimeString('ru-Ru', { timeZone: 'UTC' })
+      return setTimeDifference(diff)
+    }, 1000)
+  }, [])
+
+  // const startDate = new Date(date)
+  // // Do your operations
+  // const endDate = new Date()
+  // const seconds = (endDate.getTime() - startDate.getTime()) / 1000
+
+  console.log(
+    'Datediff: ',
+    new Date(Date.now() - +new Date(date)).toLocaleTimeString(),
+  )
 
   return (
     <Card className={classes.root}>
       {/* <div className={classes.details}> */}
       <Grid container direction='row'>
-
-        <Grid item >
-
-        <CardContent className={classes.item}>
-
-          <Typography component='h6' variant='body2'>
-
-            {new Date(date).toLocaleTimeString()}
-          </Typography>
-        </CardContent>
-        </Grid>
-
-        <Grid item >
+        <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
-              Краснознаменск →
+              {timeDifference}
+            </Typography>
+          </CardContent>
+        </Grid>
+
+        <Grid item>
+          <CardContent className={classes.item}>
+            <Typography component='h6' variant='body2'>
+              {from} →
             </Typography>
             <Typography component='h6' variant='body2'>
-              Москва
+              {to}
             </Typography>
           </CardContent>
         </Grid>
@@ -100,21 +117,18 @@ export const TestGridCardAccepted = ({ date }: any) => {
           </CardContent>
         </Grid> */}
 
-        <Grid item >
+        <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
-              +7 999 999-99-99
+              {phone}
             </Typography>
           </CardContent>
         </Grid>
 
-
-        <Grid item >
-
-        </Grid>
+        <Grid item></Grid>
         <CardContent className={classes.item}>
           <Button size='small' variant='outlined'>
-            Принять
+            id: {id}
           </Button>
         </CardContent>
         {/* <Grid item >

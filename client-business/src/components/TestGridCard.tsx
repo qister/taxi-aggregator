@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -10,6 +10,8 @@ import { yellow } from '@material-ui/core/colors'
 
 import { client } from '../Connections'
 import { Button, Grid } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { acceptOrder } from '../redux/actions'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -22,7 +24,6 @@ const useStyles = makeStyles(() =>
     },
     details: {
       // display: 'flex',
-
       // alignItems: 'flex-start',
       // justifyContent: 'center',
     },
@@ -43,41 +44,55 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const TestGridCard = ({ date }: any) => {
+export const TestGridCard_ = ({
+  from,
+  to,
+  phone,
+  date,
+  id,
+  acceptOrder,
+}: any) => {
+  
+  const attributes = {
+    from,
+    to,
+    phone,
+    date,
+    id,
+  }
+
   const classes = useStyles()
 
-  const acceptOrder = () => {
-    client.send(
-      JSON.stringify({
-        type: 'message',
-        msg: 'order accepted',
-      }),
-    )
+  const handleAccept = () => {
+    acceptOrder(attributes)
+
+    // client.send(
+    //   JSON.stringify({
+    //     type: 'message',
+    //     msg: 'order accepted',
+    //   }),
+    // )
   }
 
   return (
     <Card className={classes.root}>
       {/* <div className={classes.details}> */}
       <Grid container direction='row'>
-
-        <Grid item >
-
-        <CardContent className={classes.item}>
-
-          <Typography component='h6' variant='body2'>
-
-            {new Date(date).toLocaleTimeString()}
-          </Typography>
-        </CardContent>
-        </Grid>
-
-        <Grid item >
+        <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
-              Краснознаменск →
+              {new Date(date).toLocaleTimeString()}
+            </Typography>
+          </CardContent>
+        </Grid>
+
+        <Grid item>
+          <CardContent className={classes.item}>
+            <Typography component='h6' variant='body2'>
+              {from} →
             </Typography>
             <Typography component='h6' variant='body2'>
-              Москва
+              {to}
             </Typography>
           </CardContent>
         </Grid>
@@ -99,20 +114,17 @@ export const TestGridCard = ({ date }: any) => {
           </CardContent>
         </Grid> */}
 
-        <Grid item >
+        <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
-              +7 999 999-99-99
+              {phone}
             </Typography>
           </CardContent>
         </Grid>
 
-
-        <Grid item >
-
-        </Grid>
+        <Grid item></Grid>
         <CardContent className={classes.item}>
-          <Button size='small' variant='outlined'>
+          <Button size='small' variant='outlined' onClick={handleAccept}>
             Принять
           </Button>
         </CardContent>
@@ -131,3 +143,10 @@ export const TestGridCard = ({ date }: any) => {
     </Card>
   )
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    acceptOrder: (order: any) => dispatch(acceptOrder(order)),
+  }
+}
+export const TestGridCard = connect(null, mapDispatchToProps)(TestGridCard_)

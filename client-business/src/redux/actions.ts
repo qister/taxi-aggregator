@@ -1,14 +1,15 @@
-import {ACCEPT_ORDER, SET_ORDERS} from './constants'
+import { ACCEPT_ORDER, ADD_ORDER } from './constants'
 
-export const addNewOrder = (order: any) => ({
-  type: SET_ORDERS,
-  payload: order
-})
+export const addNewOrder = (order: any) => {
+  console.log('Order: ', order)
+
+  return {
+    type: ADD_ORDER,
+    payload: order,
+  }
+}
 
 export const acceptOrder = (order: any) => ({
   type: ACCEPT_ORDER,
-  payload: order
+  payload: order,
 })
-
-
-

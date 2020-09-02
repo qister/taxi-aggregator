@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { SET_ORDERS } from './constants'
+import { ACCEPT_ORDER, ADD_ORDER } from './constants'
 
 type State = {
   orders: any[]
@@ -13,9 +13,14 @@ const initialState: State = {
 
 export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case SET_ORDERS: {
+    case ADD_ORDER:
       return { ...state, orders: [...state.orders, action.payload] }
-    }
+
+    case ACCEPT_ORDER:
+      return {
+        ...state,
+        acceptedOrders: [...state.acceptedOrders, action.payload],
+      }
     default:
       return state
   }

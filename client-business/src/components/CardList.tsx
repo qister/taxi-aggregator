@@ -16,53 +16,50 @@ import { connect } from 'react-redux'
 const CardList_ = (props: any) => {
   console.log('CardList Props: ', props)
 
-  const [userName, setUserName] = useState('Retail')
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const [messages, setMessages] = useState<any>([])
-  const [searchVal, setSearchVal] = useState('')
+  // const [userName, setUserName] = useState('Retail')
+  // const [isLoggedIn, setIsLoggedIn] = useState(true)
+  // const [messages, setMessages] = useState<any>([])
+  // const [searchVal, setSearchVal] = useState('')
 
   // const [from, setFrom] = useState('')
   // const [to, setTo] = useState('')
   // const [phone, setPhone] = useState('')
 
-  useEffect(() => {
-    // client.onopen = () => {
-    //   console.log('connected 2')
-    // }
-    // client.onmessage = (message: any) => {
-    //   console.log('message', message)
-    //   console.log('message data', message.data)
-    //   const messageParsed = JSON.parse(message.data)
-    //   const dataFromServer: any = messageParsed.data
-    //   console.log('got reply! ', dataFromServer)
-    //   if (messageParsed.type === 'message') {
-    //     setMessages((prev: any) => [
-    //       ...prev,
-    //       {
-    //         msg: dataFromServer,
-    //       },
-    //     ])
-    //   }
-    // }
-  }, [])
+  // useEffect(() => {
+  //   // client.onopen = () => {
+  //   //   console.log('connected 2')
+  //   // }
+  //   // client.onmessage = (message: any) => {
+  //   //   console.log('message', message)
+  //   //   console.log('message data', message.data)
+  //   //   const messageParsed = JSON.parse(message.data)
+  //   //   const dataFromServer: any = messageParsed.data
+  //   //   console.log('got reply! ', dataFromServer)
+  //   //   if (messageParsed.type === 'message') {
+  //   //     setMessages((prev: any) => [
+  //   //       ...prev,
+  //   //       {
+  //   //         msg: dataFromServer,
+  //   //       },
+  //   //     ])
+  //   //   }
+  //   // }
+  // }, [])
 
   return (
     <>
       {/* <TestGridCard /> */}
 
       {
-        props.orders
-          .map((item: any, index: number) => {
-            const { from, to, phone, date } = item
+        props.orders.slice().reverse()
+          .map((item: any) => {
+            console.log('Item: ',item);
+            
+            const { from, to, phone, date, id } = item
 
-            // console.log(typeof date)
-            const locale = new Date(date).toLocaleTimeString()
-            console.log(locale)
-
-            return <TestGridCard key={index} {...{ from, to, phone, date }} />
+            return <TestGridCard {...{ from, to, phone, date, id }} />
             // return <TestCard key={index} {...{ from, to, phone, date }} />
-          })
-          .reverse()}
+          })}
     </>
   )
 }

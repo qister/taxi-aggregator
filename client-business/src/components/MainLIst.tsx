@@ -26,13 +26,15 @@ export const MainList = () => {
   function FormRow() {
     return (
       <React.Fragment>
+
         <Grid item xs={6}>
           <CardList />
         </Grid>
+
         <Grid item xs={6}>
-          
           <CardListAccepted/>
         </Grid>
+        
       </React.Fragment>
     )
   }

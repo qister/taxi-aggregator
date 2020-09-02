@@ -24,7 +24,7 @@ const MainContainer_ = (props: any) => {
       const dataFromServer: any = messageParsed.data
       console.log('got reply! ', dataFromServer)
       if (messageParsed.type === 'message') {
-        props.addNewOrder([...props.orders, dataFromServer])
+        props.addNewOrder(dataFromServer)
       }
     }
   }, [])
@@ -32,15 +32,15 @@ const MainContainer_ = (props: any) => {
   return <MainList />
 }
 
-function mapStateToProps(state: any) {
+const mapStateToProps = (state: any) => {
   return {
     orders: state.orders,
   }
 }
 
-function mapDispatchToProps(dispatch: any) {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    addNewOrder: (orders: any) => dispatch(addNewOrder(orders)),
+    addNewOrder: (order: any) => dispatch(addNewOrder(order)),
   }
 }
 
