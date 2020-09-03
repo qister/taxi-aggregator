@@ -61,7 +61,7 @@ const useStyles = makeStyles(() =>
 export const TestCard = ({ date }: any) => {
   const classes = useStyles()
 
-  const acceptOrder = () => {
+  const addOrderToAcceptedList = () => {
     // client.send(
     //   JSON.stringify({
     //     type: 'message',
@@ -125,7 +125,7 @@ export const TestCard = ({ date }: any) => {
             Действия
           </Typography>
 
-          <IconButton size='small' onClick={acceptOrder}>
+          <IconButton size='small' onClick={addOrderToAcceptedList}>
             <DoneIcon />
           </IconButton>
           <IconButton size='small'>

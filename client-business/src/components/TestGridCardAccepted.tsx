@@ -44,7 +44,7 @@ const useStyles = makeStyles(() =>
 export const TestGridCardAccepted = ({ from, to, phone, date, id }: any) => {
   const classes = useStyles()
 
-  // const acceptOrder = () => {
+  // const addOrderToAcceptedList = () => {
   //   client.send(
   //     JSON.stringify({
   //       type: 'message',
@@ -132,7 +132,7 @@ export const TestGridCardAccepted = ({ from, to, phone, date, id }: any) => {
         </CardContent>
         {/* <Grid item >
           <CardContent className={classes.item}>
-            <IconButton size='small' onClick={acceptOrder}>
+            <IconButton size='small' onClick={addOrderToAcceptedList}>
               <DoneIcon />
             </IconButton>
             <IconButton size='small'>

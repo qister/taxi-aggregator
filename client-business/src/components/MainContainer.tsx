@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { w3cwebsocket as W3CWebSocket } from 'websocket'
 import { MainList } from './MainLIst'
 import { connect } from 'react-redux'
-import { addNewOrder } from '../redux/actions'
+import { addOrderToPendingList } from '../redux/actions'
 
 // const client = new W3CWebSocket('ws://localhost:8001')
 
@@ -22,7 +22,7 @@ import { addNewOrder } from '../redux/actions'
 //     const dataFromServer: any = messageParsed.data
 //     console.log('got reply! ', dataFromServer)
 //     if (messageParsed.type === 'message') {
-//       props.addNewOrder(dataFromServer)
+//       props.addOrderToPendingList(dataFromServer)
 //     }
 //   }
 //   client.onclose = function(e) {
@@ -50,7 +50,6 @@ const MainContainer_ = (props: any) => {
 
       client.onopen = () => {
         console.log('connected')
-
       }
 
       client.onmessage = (message: any) => {
@@ -62,7 +61,7 @@ const MainContainer_ = (props: any) => {
         const dataFromServer: any = messageParsed.data
         console.log('got reply! ', dataFromServer)
         if (messageParsed.type === 'message') {
-          props.addNewOrder(dataFromServer)
+          props.addOrderToPendingList(dataFromServer)
         }
       }
       client.onclose = function (e) {
@@ -99,7 +98,7 @@ const MainContainer_ = (props: any) => {
     //   const dataFromServer: any = messageParsed.data
     //   console.log('got reply! ', dataFromServer)
     //   if (messageParsed.type === 'message') {
-    //     props.addNewOrder(dataFromServer)
+    //     props.addOrderToPendingList(dataFromServer)
     //   }
     // }
   }, [])
@@ -115,7 +114,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addNewOrder: (order: any) => dispatch(addNewOrder(order)),
+    addOrderToPendingList: (order: any) => dispatch(addOrderToPendingList(order)),
   }
 }
 

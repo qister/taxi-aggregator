@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { ACCEPT_ORDER, ADD_ORDER } from './constants'
+import { ADD_TO_ACCEPTED, ADD_TO_PENDING, DELETE_FROM_PENDING } from './constants'
 
 type State = {
   orders: any[]
@@ -13,13 +13,18 @@ const initialState: State = {
 
 export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case ADD_ORDER:
+    case ADD_TO_PENDING:
       return { ...state, orders: [...state.orders, action.payload] }
 
-    case ACCEPT_ORDER:
+    case ADD_TO_ACCEPTED:
       return {
         ...state,
         acceptedOrders: [...state.acceptedOrders, action.payload],
+      }
+    case DELETE_FROM_PENDING:
+      return {
+        ...state,
+        orders: state.orders.filter(order => order.id !== action.payload.id)
       }
     default:
       return state
