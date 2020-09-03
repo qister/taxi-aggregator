@@ -10,7 +10,7 @@ import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { addToTempList } from '../redux/actions'
+import { acceptOrder } from '../redux/actions'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -49,7 +49,7 @@ export const TestGridCard_ = ({
   phone,
   date,
   id,
-  addToTempList,
+  acceptOrder,
 }: any) => {
 
   const attributes = {
@@ -63,7 +63,7 @@ export const TestGridCard_ = ({
   const classes = useStyles()
 
   const handleAccept = () => {
-    addToTempList(attributes)
+    acceptOrder(attributes)
 
     // client.send(
     //   JSON.stringify({
@@ -145,7 +145,7 @@ export const TestGridCard_ = ({
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addToTempList: (order: any) => dispatch(addToTempList(order)),
+    acceptOrder: (order: any) => dispatch(acceptOrder(order)),
   }
 }
 export const TestGridCard = connect(null, mapDispatchToProps)(TestGridCard_)
