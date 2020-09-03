@@ -8,7 +8,6 @@ import DoneIcon from '@material-ui/icons/Done'
 import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 
-import { client } from '../Connections'
 import { Button, Grid } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { acceptOrder } from '../redux/actions'
@@ -52,7 +51,7 @@ export const TestGridCard_ = ({
   id,
   acceptOrder,
 }: any) => {
-  
+
   const attributes = {
     from,
     to,

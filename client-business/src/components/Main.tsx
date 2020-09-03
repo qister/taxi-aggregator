@@ -13,7 +13,6 @@ import LocalTaxiIcon from '@material-ui/icons/LocalTaxi'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { client } from '../Connections'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,43 +48,43 @@ export const Main = () => {
   const [to, setTo] = useState('')
   const [phone, setPhone] = useState('')
 
-  useEffect(() => {
-    client.onopen = () => {
-      console.log('connected')
-    }
-    // client.onmessage = (message) => {
-    //   console.log('message', message)
-    //   const dataFromServer: any = message.data
-    //   console.log('got reply! ', dataFromServer)
-    //   if (dataFromServer.type === 'message') {
-    //     setMessages((prev: any) => [
-    //       ...prev,
-    //       dataFromServer,
-    //       {
-    //         msg: dataFromServer.msg,
-    //         user: dataFromServer.user,
-    //       },
-    //     ])
-    //   }
-    // }
-  }, [])
+  // useEffect(() => {
+  //   client.onopen = () => {
+  //     console.log('connected')
+  //   }
+  //   // client.onmessage = (message) => {
+  //   //   console.log('message', message)
+  //   //   const dataFromServer: any = message.data
+  //   //   console.log('got reply! ', dataFromServer)
+  //   //   if (dataFromServer.type === 'message') {
+  //   //     setMessages((prev: any) => [
+  //   //       ...prev,
+  //   //       dataFromServer,
+  //   //       {
+  //   //         msg: dataFromServer.msg,
+  //   //         user: dataFromServer.user,
+  //   //       },
+  //   //     ])
+  //   //   }
+  //   // }
+  // }, [])
 
-  const handleClick = (e: any) => {
-    e.preventDefault()
+  // const handleClick = (e: any) => {
+  //   e.preventDefault()
 
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        client.send(
-          JSON.stringify({
-            type: 'message',
-            data: { from, to, phone, date: new Date() },
-          }),
-        )
-      }, Math.random() * i * 2000)
-    }
+  //   for (let i = 0; i < 5; i++) {
+  //     setTimeout(() => {
+  //       client.send(
+  //         JSON.stringify({
+  //           type: 'message',
+  //           data: { from, to, phone, date: new Date() },
+  //         }),
+  //       )
+  //     }, Math.random() * i * 2000)
+  //   }
 
-    setSearchVal('')
-  }
+  //   setSearchVal('')
+  // }
   const classes = useStyles()
 
   return (
@@ -143,7 +142,7 @@ export const Main = () => {
               variant='contained'
               color='primary'
               className={classes.submit}
-              onClick={handleClick}
+              onClick={() => {}}
             >
               Заказать
             </Button>
@@ -205,7 +204,7 @@ export const Main = () => {
               variant='contained'
               color='primary'
               className={classes.submit}
-              onClick={handleClick}
+              onClick={() => {}}
             >
               Заказать
             </Button>

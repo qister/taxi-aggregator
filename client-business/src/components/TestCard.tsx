@@ -8,7 +8,6 @@ import DoneIcon from '@material-ui/icons/Done'
 import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 
-import {client} from '../Connections'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -63,13 +62,13 @@ export const TestCard = ({ date }: any) => {
   const classes = useStyles()
 
   const acceptOrder = () => {
-    client.send(
-      JSON.stringify({
-        type: 'message',
-        msg: 'order accepted',
+    // client.send(
+    //   JSON.stringify({
+    //     type: 'message',
+    //     msg: 'order accepted',
       
-      }),
-    )
+    //   }),
+    // )
   }
 
   return (
