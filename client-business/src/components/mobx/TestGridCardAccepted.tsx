@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -9,8 +9,6 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
-import { connect } from 'react-redux'
-import { acceptOrder } from '../redux/actions'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -19,7 +17,8 @@ const useStyles = makeStyles(() =>
       margin: '1rem',
       flexGrow: 1,
       animationDuration: '2s',
-      animation: `$myEffect`,
+      animationName: `$myEffect`,
+      animationFillMode: 'both'
     },
     details: {
       // display: 'flex',
@@ -33,45 +32,51 @@ const useStyles = makeStyles(() =>
     '@keyframes myEffect': {
       '0%': {
         // opacity: 0,
-        'background-color': 'yellow',
+        'background-color': 'GreenYellow',
       },
       '100%': {
         // opacity: 1,
-        'background-color': 'white',
+        'background-color': 'Aquamarine',
       },
     },
   }),
 )
 
-export const TestGridCard_ = ({
-  from,
-  to,
-  phone,
-  date,
-  id,
-  acceptOrder,
-}: any) => {
-
-  const attributes = {
-    from,
-    to,
-    phone,
-    date,
-    id,
-  }
-
+export const TestGridCardAccepted = ({ from, to, phone, date, id }: any) => {
   const classes = useStyles()
 
-  const handleAccept = () => {
-    acceptOrder(attributes)
+  // const addOrderToAcceptedList = () => {
+  //   client.send(
+  //     JSON.stringify({
+  //       type: 'message',
+  //       msg: 'order accepted',
+  //     }),
+  //   )
+  // }
+  
+  const [timeDifference, setTimeDifference] = useState('Времени прошло')
 
-    // client.send(
-    //   JSON.stringify({
-    //     type: 'message',
-    //     msg: 'order accepted',
-    //   }),
-    // )
-  }
+  useEffect(() => {
+    setInterval(() => {
+      const now = new Date()
+      const timeOrderAccepted = new Date(date)
+
+      const diff = new Date(
+        now.getTime() - timeOrderAccepted.getTime(),
+      ).toLocaleTimeString('ru-Ru', { timeZone: 'UTC' })
+      return setTimeDifference(diff)
+    }, 1000)
+  }, [])
+
+  // const startDate = new Date(date)
+  // // Do your operations
+  // const endDate = new Date()
+  // const seconds = (endDate.getTime() - startDate.getTime()) / 1000
+
+  // console.log(
+  //   'Datediff: ',
+  //   new Date(Date.now() - +new Date(date)).toLocaleTimeString(),
+  // )
 
   return (
     <Card className={classes.root}>
@@ -80,7 +85,7 @@ export const TestGridCard_ = ({
         <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
-              {new Date(date).toLocaleTimeString()}
+              {timeDifference}
             </Typography>
           </CardContent>
         </Grid>
@@ -96,23 +101,6 @@ export const TestGridCard_ = ({
           </CardContent>
         </Grid>
 
-        {/* <Grid item >
-          <CardContent className={classes.item}>
-
-            <Typography component='h6' variant='h6'>
-              →
-            </Typography>
-          </CardContent>
-        </Grid> */}
-
-        {/* <Grid item >
-          <CardContent className={classes.item}>
-            <Typography component='h6' variant='h6'>
-              Москва
-            </Typography>
-          </CardContent>
-        </Grid> */}
-
         <Grid item>
           <CardContent className={classes.item}>
             <Typography component='h6' variant='body2'>
@@ -123,8 +111,8 @@ export const TestGridCard_ = ({
 
         <Grid item></Grid>
         <CardContent className={classes.item}>
-          <Button size='small' variant='outlined' onClick={handleAccept}>
-            Принять
+          <Button size='small' variant='outlined'>
+            id: {id}
           </Button>
         </CardContent>
         {/* <Grid item >
@@ -142,10 +130,3 @@ export const TestGridCard_ = ({
     </Card>
   )
 }
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    acceptOrder: (order: any) => dispatch(acceptOrder(order)),
-  }
-}
-export const TestGridCard = connect(null, mapDispatchToProps)(TestGridCard_)

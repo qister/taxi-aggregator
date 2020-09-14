@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { w3cwebsocket as W3CWebSocket } from 'websocket'
 import { MainList } from './MainLIst'
 import { connect } from 'react-redux'
-import { addOrderToPendingList } from '../redux/actions'
+import { addOrderToPendingList } from '../../redux/actions'
 
 // const client = new W3CWebSocket('ws://localhost:8001')
 
@@ -40,9 +40,6 @@ import { addOrderToPendingList } from '../redux/actions'
 // }
 
 const MainContainer_ = (props: any) => {
-  console.log('props', props)
-
-  // console.log('props', props)
 
   useEffect(() => {
     const wsConnect = () => {
@@ -53,9 +50,9 @@ const MainContainer_ = (props: any) => {
       }
 
       client.onmessage = (message: any) => {
-        console.log('message', message)
+        // console.log('message', message)
 
-        console.log('message data', message.data)
+        // console.log('message data', message.data)
 
         const messageParsed = JSON.parse(message.data)
         const dataFromServer: any = messageParsed.data

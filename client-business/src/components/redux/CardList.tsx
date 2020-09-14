@@ -4,8 +4,7 @@ import { Card, Avatar, Input, Typography, message } from 'antd'
 import 'antd/dist/antd.css'
 import '../index.css'
 import { useEffect } from 'react'
-import { TestCard } from './TestCard'
-import { logDOM } from '@testing-library/react'
+
 
 // import {client} from '../Connections'
 import { TestGridCard } from './TestGridCard'
@@ -14,7 +13,7 @@ import { connect } from 'react-redux'
 // const client = new W3CWebSocket('ws://localhost:8001')
 
 const CardList_ = (props: any) => {
-  console.log('CardList Props: ', props)
+  
 
   // const [userName, setUserName] = useState('Retail')
   // const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -57,7 +56,7 @@ const CardList_ = (props: any) => {
             
             const { from, to, phone, date, id } = item
 
-            return <TestGridCard {...{ from, to, phone, date, id }} />
+            return <TestGridCard key={id} {...{ from, to, phone, date, id }} />
             // return <TestCard key={index} {...{ from, to, phone, date }} />
           })}
     </>

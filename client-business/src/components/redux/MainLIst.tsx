@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import { Container } from '@material-ui/core'
 import { CardList } from './CardList'
-import { SecondList } from './SecondList'
 import { CardListAccepted } from './CardListAccepted'
 
 const useStyles = makeStyles((theme: Theme) =>

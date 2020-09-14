@@ -3,36 +3,12 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { Provider } from 'react-redux'
-import { configureStore } from './redux/store'
-import { reducer } from './redux/reducer'
-import createSagaMiddleware from 'redux-saga'
-import { createStore, compose, applyMiddleware } from 'redux'
-import { rootSaga } from './redux/rootSaga'
+import { Provider } from 'mobx-react'
+import { rootStore } from './mobx/rootStore'
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION__?: any
-  }
-}
-
-const saga = createSagaMiddleware()
-
-const store = createStore(
-  reducer,
-  compose(
-    applyMiddleware(saga),
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__(),
-  ),
-)
-
-saga.run(rootSaga)
-
-// const store = configureStore()
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={rootStore}>
     <App />
   </Provider>,
   document.getElementById('root'),
