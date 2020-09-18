@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import { addOrderToPendingList } from '../../redux/actions'
 import { MobXProviderContext, observer } from 'mobx-react'
 import { MainList } from './MainList'
+import { PrimarySearchAppBar } from './Navigation'
 
 function useStores() {
   return useContext(MobXProviderContext)
 }
 
 const MainContainer_ = observer((props: any) => {
-  const {store} = useStores()
+  const { store } = useStores()
 
   useEffect(() => {
     const wsConnect = () => {
@@ -55,7 +56,12 @@ const MainContainer_ = observer((props: any) => {
     wsConnect()
   }, [])
 
-  return <MainList />
+  return (
+    <>
+      <PrimarySearchAppBar />
+      <MainList />
+    </>
+  )
 })
 
 // const mapStateToProps = (state: any) => {
