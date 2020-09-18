@@ -1,18 +1,26 @@
 import { action, decorate, observable } from 'mobx'
 
-class Store {
-  pendingOrders: any[] = []
-  acceptedOrders: any[] = []
+export interface IOrder {
+  date: Date
+  from: string
+  id: number
+  to: string
+  phone: string
+}
 
-  addToPending(order: any) {
+class Store {
+  pendingOrders: Array<IOrder> = []
+  acceptedOrders: Array<IOrder> = []
+
+  addToPending(order: IOrder) {
     this.pendingOrders.push(order)
   }
 
-  addToAccepted(order: any) {
+  addToAccepted(order: IOrder) {
     this.acceptedOrders.push(order)
   }
 
-  deleteFromPending(order: any) {
+  deleteFromPending(order: IOrder) {
     // console.log('Order: ', order)
 
     this.pendingOrders = this.pendingOrders.filter((item) => {
@@ -21,7 +29,7 @@ class Store {
     })
   }
 
-  moveToAccepted(order: any) {
+  moveToAccepted(order: IOrder) {
     this.addToAccepted(order)
     this.deleteFromPending(order)
   }

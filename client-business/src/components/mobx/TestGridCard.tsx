@@ -10,6 +10,7 @@ import { yellow } from '@material-ui/core/colors'
 import { Button, Grid } from '@material-ui/core'
 
 import { MobXProviderContext, observer } from 'mobx-react'
+import { IOrder } from '../../mobx/ordersStore'
 // import { acceptOrder } from '../redux/actions'
 
 const useStyles = makeStyles(() =>
@@ -49,7 +50,7 @@ const useStores = () => {
 }
 
 export const TestGridCard_ = observer(
-  ({ from, to, phone, date, id, acceptOrder }: any) => {
+  ({ from, to, phone, date, id }: IOrder) => {
     const attributes = {
       from,
       to,
@@ -59,8 +60,6 @@ export const TestGridCard_ = observer(
     }
 
     const { store } = useStores()
-
-    console.log('Store: ', store)
 
     const classes = useStyles()
 

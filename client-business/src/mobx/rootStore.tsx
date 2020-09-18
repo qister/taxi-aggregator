@@ -3,8 +3,8 @@ import { ordersStore } from "./ordersStore"
 
 
 class RootStore {
-  appStore: any
-  ordersStore: any
+  appStore
+  ordersStore
 
   constructor() {
       this.appStore = appStore

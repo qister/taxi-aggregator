@@ -9,6 +9,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
+import { IOrder } from '../../mobx/ordersStore'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -42,7 +43,7 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const TestGridCardAccepted = ({ from, to, phone, date, id }: any) => {
+export const TestGridCardAccepted = ({ from, to, phone, date, id }: IOrder) => {
   const classes = useStyles()
 
   // const addOrderToAcceptedList = () => {

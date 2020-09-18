@@ -12,12 +12,13 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { AnyPtrRecord } from 'dns'
 import { MobXProviderContext, observer } from 'mobx-react'
+import { IOrder } from '../../mobx/ordersStore'
 
 const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
-const CardListAccepted_ = observer((props: any) => {
+const CardListAccepted_ = observer(() => {
 
   const {store} = useStores()
 
@@ -26,7 +27,7 @@ const CardListAccepted_ = observer((props: any) => {
       {store.ordersStore.acceptedOrders
         .slice()
         .reverse()
-        .map((item: any) => {
+        .map((item: IOrder) => {
           const { from, to, phone, date, id } = item
 
           // console.log(typeof date)
