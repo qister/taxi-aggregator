@@ -8,7 +8,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client-retail\" \"npm run client-business\" ",
     "server": "nodemon server.js",
     "client-retail": "npm run start --prefix ../client-retail",
-    "client-business": "npm run start --prefix ../client-business"
+    "client-business": "npm run start --prefix ../client-business",
+    "client-retail-install": "npm i --prefix ../client-retail",
+    "client-business-install": "npm i --prefix ../client-business"
   },
   "keywords": [],
   "author": "",

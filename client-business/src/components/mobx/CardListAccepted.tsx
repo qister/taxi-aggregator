@@ -11,20 +11,32 @@ import { TestGridCardAccepted } from './TestGridCardAccepted'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { AnyPtrRecord } from 'dns'
-import { MobXProviderContext, observer } from 'mobx-react'
+import { MobXProviderContext} from 'mobx-react'
+import {observer, useObserver } from 'mobx-react-lite'
+
 import { IOrder } from '../../mobx/ordersStore'
 
 const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
+function useUserData() {
+  const { store } = useStores()
+  return useObserver( () => ({
+    store: store.ordersStore.acceptedOrders
+  }))
+}
+
 const CardListAccepted_ = observer(() => {
 
-  const {store} = useStores()
+  const {store}: any = useUserData()
+
+  console.log('Store: ', store);
+  
 
   return (
     <>
-      {store.ordersStore.acceptedOrders
+      {store
         .slice()
         .reverse()
         .map((item: IOrder) => {
