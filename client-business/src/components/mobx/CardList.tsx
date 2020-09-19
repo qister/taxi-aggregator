@@ -16,7 +16,7 @@ const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
-const CardList_ = observer(() => {
+export const CardList = observer(() => {
   const {store} = useStores()
 
   // const [userName, setUserName] = useState('Retail')
@@ -65,8 +65,3 @@ const CardList_ = observer(() => {
   )
 })
 
-// const mapStateToProps = (state: any) => ({
-//   orders: state.orders,
-// })
-
-export const CardList = CardList_

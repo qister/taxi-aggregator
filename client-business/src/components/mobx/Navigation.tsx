@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -14,6 +14,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
+import { BadgeAvatars } from './Avatar'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,7 +83,21 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const PrimarySearchAppBar = () => {
+const useStores = () => {
+  return useContext(MobXProviderContext)
+}
+
+const useUserData = () => {
+  const { store } = useStores() 
+  return useObserver( () => ({
+    appStore: store.appStore,
+  }))
+}
+
+export const PrimarySearchAppBar = observer(() => {
+
+  const {appStore} = useUserData()
+
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [
@@ -196,11 +212,9 @@ export const PrimarySearchAppBar = () => {
           </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <MailIcon />
-              </Badge>
-            </IconButton>
+            {/* <IconButton aria-label='show 4 new mails' color='inherit'>
+              <BadgeAvatars connected={appStore.connected}/>
+            </IconButton> */}
             <IconButton aria-label='show 17 new notifications' color='inherit'>
               <Badge badgeContent={17} color='secondary'>
                 <NotificationsIcon />
@@ -214,10 +228,11 @@ export const PrimarySearchAppBar = () => {
               onClick={handleProfileMenuOpen}
               color='inherit'
             >
-              <AccountCircle />
+              {/* <AccountCircle /> */}
+              <BadgeAvatars connected={appStore.connected}/>
             </IconButton>
           </div>
-          <div className={classes.sectionMobile}>
+          {/* <div className={classes.sectionMobile}>
             <IconButton
               aria-label='show more'
               aria-controls={mobileMenuId}
@@ -225,13 +240,13 @@ export const PrimarySearchAppBar = () => {
               onClick={handleMobileMenuOpen}
               color='inherit'
             >
-              {/* <MoreIcon /> */}
+              <MoreIcon />
             </IconButton>
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
       {/* {renderMobileMenu} */}
       {renderMenu}
     </div>
   )
-}
+})

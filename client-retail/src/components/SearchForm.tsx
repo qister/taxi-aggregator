@@ -13,9 +13,10 @@ import LocalTaxiIcon from '@material-ui/icons/LocalTaxi'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import {client} from '../Connections'
+import { client } from '../Connections'
+import { useHttp } from '../hooks/http.hook'
 
-function Copyright() {
+const Copyright = () => {
   return (
     <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
@@ -48,17 +49,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
-
 export const SearchForm = () => {
+  const { request } = useHttp()
 
-  const [userName, setUserName] = useState('Retail')
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const [messages, setMessages] = useState<any>([])
-  const [searchVal, setSearchVal] = useState('')
-  const [from, setFrom] = useState('')
-  const [to, setTo] = useState('')
-  const [phone, setPhone] = useState('')
+  interface IForm {
+    from: string
+    to: string
+    phone: string
+    date?: Date | string
+  }
+
+  const [form, setForm] = useState<IForm>({
+    from: '',
+    to: '',
+    phone: '',
+  })
 
   useEffect(() => {
     client.onopen = () => {
@@ -79,27 +84,46 @@ export const SearchForm = () => {
     //     ])
     //   }
     // }
-
   }, [])
 
-  const handleClick = (e: any) => {
-    e.preventDefault()
-
-    for( let i = 0; i < 1; i++) {
-      setTimeout( () => {
-        client.send(
-          JSON.stringify({
-            type: 'message',
-            data: {from, to, phone, date: new Date}
-          }),
-        )
-      }, Math.random()*i*2000)
-    }
-    
-    
-
-    setSearchVal('')
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [event.target.name]: event.target.value })
   }
+
+  const handleClick = async (
+    event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+  ) => {
+
+    event.preventDefault()
+
+    const data = await request(
+      '/api/order/new',
+      'POST',
+      { ...form, date: new Date },
+      { 'Content-Type': 'application/json' },
+    )
+    console.log('Response: ', data)
+
+    // setForm({ ...form, [event.target.name]: event.target.value })
+
+    // for( let i = 0; i < 1; i++) {
+    //   setTimeout( () => {
+    //     client.send(
+    //       JSON.stringify({
+    //         type: 'message',
+    //         data: {from, to, phone, date: new Date}
+    //       }),
+    //     )
+    //   }, Math.random()*i*2000)
+    // }
+
+    setForm({
+      from: '',
+      to: '',
+      phone: '',
+    })
+  }
+
   const classes = useStyles()
 
   return (
@@ -121,10 +145,9 @@ export const SearchForm = () => {
             id='from'
             label='Откуда'
             name='from'
-            
             autoFocus
-            onChange={ (e: any) => setFrom(e.target.value)}
-            value={from}
+            onChange={changeHandler}
+            value={form.from}
           />
           <TextField
             variant='outlined'
@@ -134,9 +157,8 @@ export const SearchForm = () => {
             id='to'
             label='Куда'
             name='to'
-            
-            onChange={ (e: any) => setTo(e.target.value)}
-            value={to}
+            onChange={changeHandler}
+            value={form.to}
           />
           <TextField
             variant='outlined'
@@ -148,15 +170,15 @@ export const SearchForm = () => {
             type='phone'
             id='phone'
             autoComplete='phone'
-            onChange={ (e: any) => setPhone(e.target.value)}
-            value={phone}
+            onChange={changeHandler}
+            value={form.phone}
           />
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
           <Button
-            size="large"
+            size='large'
             type='submit'
             fullWidth
             variant='contained'

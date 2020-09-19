@@ -1,17 +1,23 @@
 import React, { useContext, useEffect } from 'react'
-import { IMessageEvent, w3cwebsocket as W3CWebSocket } from 'websocket'
-import { connect } from 'react-redux'
-import { addOrderToPendingList } from '../../redux/actions'
-import { MobXProviderContext, observer } from 'mobx-react'
+import { w3cwebsocket as W3CWebSocket } from 'websocket'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 import { MainList } from './MainList'
 import { PrimarySearchAppBar } from './Navigation'
 
-function useStores() {
+const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
-const MainContainer_ = observer(() => {
-  const { store } = useStores()
+const useUserData = () => {
+  const { store } = useStores() 
+  return useObserver( () => ({
+    ordersStore: store.ordersStore,
+    appStore: store.appStore,
+  }))
+}
+
+export const MainContainer = observer(() => {
+  const { ordersStore, appStore } = useUserData()
 
   useEffect(() => {
     const wsConnect = () => {
@@ -19,18 +25,16 @@ const MainContainer_ = observer(() => {
 
       client.onopen = () => {
         console.log('connected')
+        appStore.setOnline()
       }
 
-      client.onmessage = (message: IMessageEvent) => {
-        // console.log('message', message)
-
-        // console.log('message data', message.data)
+      client.onmessage = (message) => {
         if (typeof message.data === 'string') {
           const messageParsed = JSON.parse(message.data)
           const dataFromServer: any = messageParsed.data
           console.log('got reply! ', dataFromServer)
           if (messageParsed.type === 'message') {
-            store.ordersStore.addToPending(dataFromServer)
+            ordersStore.addToPending(dataFromServer)
           }
         }
       }
@@ -40,6 +44,7 @@ const MainContainer_ = observer(() => {
           'Socket is closed. Reconnect will be attempted in 1 second.',
           e.reason,
         )
+        appStore.setOffline()
         setTimeout( () => {
           wsConnect()
         }, 1000)
@@ -65,22 +70,3 @@ const MainContainer_ = observer(() => {
     </>
   )
 })
-
-// const mapStateToProps = (state: any) => {
-//   return {
-//     orders: state.orders,
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch: any) => {
-//   return {
-//     addOrderToPendingList: (order: any) => dispatch(addOrderToPendingList(order)),
-//   }
-// }
-
-// export const MainContainer = connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(MainContainer_)
-
-export const MainContainer = MainContainer_

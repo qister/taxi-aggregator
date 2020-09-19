@@ -1,19 +1,8 @@
-import React, { memo, useCallback, useContext, useState } from 'react'
-
-import { Card, Avatar, Input, Typography, message } from 'antd'
-import 'antd/dist/antd.css'
-import '../../index.css'
-import { useEffect } from 'react'
-import { logDOM } from '@testing-library/react'
-
-import { TestGridCard } from './TestGridCard'
-import { TestGridCardAccepted } from './TestGridCardAccepted'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { AnyPtrRecord } from 'dns'
+import React, { useContext } from 'react'
 import { MobXProviderContext} from 'mobx-react'
 import {observer, useObserver } from 'mobx-react-lite'
 
+import { TestGridCardAccepted } from './TestGridCardAccepted'
 import { IOrder } from '../../mobx/ordersStore'
 
 const useStores = () => {
@@ -43,7 +32,6 @@ const CardListAccepted_ = observer(() => {
           const { from, to, phone, date, id } = item
 
           // console.log(typeof date)
-          const locale = new Date(date).toLocaleTimeString()
           // console.log(locale)
 
           return (
