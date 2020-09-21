@@ -10,6 +10,7 @@ import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
 import { IOrder } from '../../mobx/ordersStore'
+import { observer } from 'mobx-react'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -43,7 +44,7 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const TestGridCardAccepted = ({ from, to, phone, date, id }: IOrder) => {
+export const TestGridCardAccepted = observer(({ from, to, phone, date, id }: IOrder) => {
   const classes = useStyles()
 
   // const addOrderToAcceptedList = () => {
@@ -54,6 +55,10 @@ export const TestGridCardAccepted = ({ from, to, phone, date, id }: IOrder) => {
   //     }),
   //   )
   // }
+
+  const handleAccept = () => {
+
+  }
   
   const [timeDifference, setTimeDifference] = useState('Времени прошло')
 
@@ -130,4 +135,4 @@ export const TestGridCardAccepted = ({ from, to, phone, date, id }: IOrder) => {
       {/* </div> */}
     </Card>
   )
-}
+})

@@ -1,4 +1,6 @@
 import { action, decorate, observable } from 'mobx'
+import { useHttp } from '../hooks/http.hook'
+import axios from 'axios'
 
 export interface IOrder {
   date: Date
@@ -21,17 +23,39 @@ class Store {
   }
 
   deleteFromPending(order: IOrder) {
-    // console.log('Order: ', order)
-
     this.pendingOrders = this.pendingOrders.filter((item) => {
       console.log('item to delete: ', item)
       return item.id !== order.id
     })
   }
 
-  moveToAccepted(order: IOrder) {
-    this.addToAccepted(order)
-    this.deleteFromPending(order)
+  async acceptOrder(order: IOrder) {
+    // console.log('rerere: ', rere);
+
+    // const data = await request('/api/order/accept', 'POST', { id: order.id })
+
+    const data = await axios.post(
+      '/api/order/accept',
+      JSON.stringify({ id: order.id }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+
+    console.log('Data: ', data)
+  }
+
+  async moveToAccepted(order: IOrder) {
+    try {
+      await this.acceptOrder(order)
+      this.addToAccepted(order)
+      this.deleteFromPending(order)
+    } catch(e) {
+
+    }
+
   }
 }
 

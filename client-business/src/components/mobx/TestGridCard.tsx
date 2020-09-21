@@ -9,7 +9,7 @@ import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
 
-import { MobXProviderContext, observer } from 'mobx-react'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 import { IOrder } from '../../mobx/ordersStore'
 // import { acceptOrder } from '../redux/actions'
 
@@ -49,6 +49,13 @@ const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
+const useUserData = () => {
+  const { store } = useStores()
+  return useObserver( () => ({
+    store: store.ordersStore
+  }))
+}
+
 export const TestGridCard_ = observer(
   ({ from, to, phone, date, id }: IOrder) => {
     const attributes = {
@@ -59,13 +66,13 @@ export const TestGridCard_ = observer(
       id,
     }
 
-    const { store } = useStores()
+    const { store } = useUserData()
 
     const classes = useStyles()
 
     const handleAccept = () => {
       // acceptOrder(attributes)
-      store.ordersStore.moveToAccepted(attributes)
+      store.moveToAccepted(attributes)
 
       // client.send(
       //   JSON.stringify({

@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 
 // import {client} from '../Connections'
 import { TestGridCard } from './TestGridCard'
-import { MobXProviderContext, observer } from 'mobx-react'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 import { IOrder } from '../../mobx/ordersStore'
 
 // const client = new W3CWebSocket('ws://localhost:8001')
@@ -16,8 +16,15 @@ const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
+const useUserData = () => {
+  const { store } = useStores()
+  return useObserver( () => ({
+    store: store.ordersStore.pendingOrders
+  }))
+}
+
 export const CardList = observer(() => {
-  const {store} = useStores()
+  const {store} = useUserData()
 
   // const [userName, setUserName] = useState('Retail')
   // const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -53,7 +60,7 @@ export const CardList = observer(() => {
     <>
       {/* <TestGridCard /> */}
 
-      {store.ordersStore.pendingOrders
+      {store
         .slice()
         .reverse()
         .map((item: IOrder) => {

@@ -5,8 +5,8 @@ import config from 'config'
 const server = new WebSoc.Server({ port: 8000 })
 const businessServer = new WebSoc.Server({ port: 8001 })
 
-const clients = new Set()
-const businessClients = new Set()
+export const clients = new Set()
+export const businessClients = new Set()
 
 const app = express()
 const PORT: number = config.get('port') || 5005
@@ -48,6 +48,8 @@ businessServer.on('connection', (ws) => {
   })
   ws.send('Hello', {}, () => console.log('Business Client connected'))
 })
+
+export const businessClients_ = businessClients
 
 const start = async () => {
   try {

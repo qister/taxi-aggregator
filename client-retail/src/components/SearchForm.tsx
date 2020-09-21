@@ -93,13 +93,15 @@ export const SearchForm = () => {
   const handleClick = async (
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
   ) => {
-
     event.preventDefault()
 
     const data = await request(
       '/api/order/new',
       'POST',
-      { ...form, date: new Date },
+      {
+        type: 'message',
+        data: { ...form, date: new Date() },
+      },
       { 'Content-Type': 'application/json' },
     )
     console.log('Response: ', data)
@@ -111,7 +113,7 @@ export const SearchForm = () => {
     //     client.send(
     //       JSON.stringify({
     //         type: 'message',
-    //         data: {from, to, phone, date: new Date}
+    //         data: {...form, date: new Date}
     //       }),
     //     )
     //   }, Math.random()*i*2000)

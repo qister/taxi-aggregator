@@ -30,6 +30,8 @@ export const MainContainer = observer(() => {
 
       client.onmessage = (message) => {
         if (typeof message.data === 'string') {
+          console.log('Message data: ', message.data);
+          
           const messageParsed = JSON.parse(message.data)
           const dataFromServer: any = messageParsed.data
           console.log('got reply! ', dataFromServer)
