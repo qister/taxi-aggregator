@@ -49,11 +49,11 @@ router.post('/accept', async (req, res) => {
     console.log('req: ', req.body);
     
 
-    // clients.forEach((client: any) => {
-    //   if (client.readyState === WebSoc.OPEN) {
-    //     client.send('Status')
-    //   }
-    // })
+    clients.forEach((client: any) => {
+      if (client.readyState === WebSoc.OPEN) {
+        client.send('Status')
+      }
+    })
 
     // const message = {
     //   ...req.body,

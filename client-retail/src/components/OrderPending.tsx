@@ -9,8 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import DoneIcon from '@material-ui/icons/Done'
 import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
-
-import { client } from '../Connections'
 import Button from '@material-ui/core/Button'
 
 const useStylesLoader = makeStyles((theme: Theme) =>
@@ -86,27 +84,6 @@ const useStyles = makeStyles(() =>
 
 export const PendingCard = () => {
   const [status, setStatus] = useState('ждем ответа')
-
-  useEffect(() => {
-    // client.onopen = () => {
-    //   console.log('connected')
-    // }
-    client.onmessage = (message: any) => {
-      console.log('message', message)
-
-      // console.log('message data', message.data)
-
-      const messageParsed = JSON.parse(message.data)
-      console.log('message parsed', messageParsed);
-      
-      const dataFromServer: any = messageParsed.data
-      console.log('got reply! ', dataFromServer)
-      if (messageParsed.type === 'message') {
-        setStatus(messageParsed.msg)
-      }
-    }
-
-  }, [])
   
   const classes = useStyles()
 

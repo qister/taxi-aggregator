@@ -9,7 +9,7 @@ const useStores = () => {
   return useContext(MobXProviderContext)
 }
 
-function useUserData() {
+const useUserData = () => {
   const { store } = useStores()
   return useObserver( () => ({
     store: store.ordersStore.acceptedOrders

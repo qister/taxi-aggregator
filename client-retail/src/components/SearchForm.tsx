@@ -13,7 +13,7 @@ import LocalTaxiIcon from '@material-ui/icons/LocalTaxi'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { client } from '../Connections'
+
 import { useHttp } from '../hooks/http.hook'
 
 const Copyright = () => {
@@ -65,26 +65,6 @@ export const SearchForm = () => {
     phone: '',
   })
 
-  useEffect(() => {
-    client.onopen = () => {
-      console.log('connected')
-    }
-    // client.onmessage = (message) => {
-    //   console.log('message', message)
-    //   const dataFromServer: any = message.data
-    //   console.log('got reply! ', dataFromServer)
-    //   if (dataFromServer.type === 'message') {
-    //     setMessages((prev: any) => [
-    //       ...prev,
-    //       dataFromServer,
-    //       {
-    //         msg: dataFromServer.msg,
-    //         user: dataFromServer.user,
-    //       },
-    //     ])
-    //   }
-    // }
-  }, [])
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value })
