@@ -13,6 +13,7 @@ import LocalTaxiIcon from '@material-ui/icons/LocalTaxi'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import { Redirect, useHistory } from 'react-router-dom'
 
 import { useHttp } from '../hooks/http.hook'
 
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SearchForm = () => {
   const { request } = useHttp()
+  const history = useHistory()
 
   interface IForm {
     from: string
@@ -64,7 +66,6 @@ export const SearchForm = () => {
     to: '',
     phone: '',
   })
-
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -104,6 +105,8 @@ export const SearchForm = () => {
       to: '',
       phone: '',
     })
+
+    history.push('/accepted')
   }
 
   const classes = useStyles()
