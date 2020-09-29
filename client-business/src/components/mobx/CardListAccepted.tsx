@@ -12,20 +12,20 @@ const useStores = () => {
 const useUserData = () => {
   const { store } = useStores()
   return useObserver( () => ({
-    store: store.ordersStore.acceptedOrders
+    store: store.ordersStore
   }))
 }
 
 const CardListAccepted_ = observer(() => {
 
-  const {store}: any = useUserData()
+  const {store} = useUserData()
 
   console.log('Store: ', store);
   
 
   return (
     <>
-      {store
+      {store.acceptedOrders
         .slice()
         .reverse()
         .map((item: IOrder) => {

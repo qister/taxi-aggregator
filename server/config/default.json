@@ -1,6 +1,6 @@
 {
   "port": 5005,
-  "mongoUri": "mongodb+srv://qister:1q2w3e4r@cluster0-zntym.mongodb.net/memes",
+  "mongoUri": "mongodb+srv://qister:123qwe@cluster0.ncyff.mongodb.net/taxi",
   "baseUrl": "http://localhost:5005",
   "jwtSecret": "localocal"
 }

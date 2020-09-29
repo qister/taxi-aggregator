@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { MainContainer } from './components/MainContainer'
+import { PendingCard } from './components/OrderPending'
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -10,7 +11,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
           <MainContainer />
         </Route>
         <Route path='/accepted'>
-          <div>Заявка принята</div>
+          <PendingCard/>
         </Route>
         <Redirect to='/' />
       </Switch>

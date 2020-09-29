@@ -24,19 +24,21 @@ class Store {
 
   deleteFromPending(order: IOrder) {
     this.pendingOrders = this.pendingOrders.filter((item) => {
-      console.log('item to delete: ', item)
       return item.id !== order.id
     })
   }
 
-  async acceptOrder(order: IOrder) {
-    // console.log('rerere: ', rere);
+  deleteFromAccepted(order: IOrder) {
+    this.acceptedOrders = this.acceptedOrders.filter((item) => {
+      console.log('item to delete from accepted: ', item)
+      return item.id !== order.id
+    })
+  }
 
-    // const data = await request('/api/order/accept', 'POST', { id: order.id })
-
+  async sendOrderAccepted(order: IOrder) {
     const data = await axios.post(
       '/api/order/accept',
-      JSON.stringify({ id: order.id }),
+      JSON.stringify({ id: order.id, user: 'taxopark' }),
       {
         headers: {
           'Content-Type': 'application/json',
@@ -47,16 +49,41 @@ class Store {
     console.log('Data: ', data)
   }
 
-  async moveToAccepted(order: IOrder) {
+  async acceptOrder(order: IOrder) {
     try {
-      await this.acceptOrder(order)
+      await this.sendOrderAccepted(order)
       this.addToAccepted(order)
       this.deleteFromPending(order)
-    } catch(e) {
-
+    } catch (e) {
+      console.log('Move error: ', e.message)
     }
-
   }
+
+  async sendOrderCompleted(order: IOrder) {
+    const data = await axios.post(
+      '/api/order/complete',
+      JSON.stringify({ id: order.id, user: 'taxopark' }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+
+    console.log('Data: ', data)
+  }
+
+  async completeOrder(order: IOrder) {
+    try {
+      await this.sendOrderCompleted(order)
+      this.deleteFromAccepted(order)
+    } catch (e) {
+      console.log('Complete error: ', e.message)
+    }
+  }
+
+  // /finish
+
 }
 
 decorate(Store, {
@@ -66,7 +93,12 @@ decorate(Store, {
   addToPending: action,
   addToAccepted: action,
   deleteFromPending: action,
-  moveToAccepted: action,
+  deleteFromAccepted: action,
+  sendOrderAccepted: action,
+  acceptOrder: action,
+  sendOrderCompleted: action,
+  completeOrder: action
+
 })
 
 export const ordersStore = new Store()

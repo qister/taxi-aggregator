@@ -45,7 +45,6 @@ export const MainContainer = () => {
   return (
     <>
       <SearchForm />
-      <PendingCard />
     </>
   )
 }

@@ -12,6 +12,7 @@ class Store {
   username: string = 'user'
   connected: boolean = false
   orderStatus: 'not created' | 'sended' | 'delevered' | 'accepted' | 'completed'  = 'not created'
+  error: Error | null = null
 
   setUser(user: string) {
     this.username = user
@@ -23,6 +24,10 @@ class Store {
 
   setOffline() {
     this.connected = false
+  }
+
+  setError(error: Error | null) {
+    this.error = error
   }
 
 }

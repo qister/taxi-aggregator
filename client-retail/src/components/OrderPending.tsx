@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -10,6 +10,9 @@ import DoneIcon from '@material-ui/icons/Done'
 import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { yellow } from '@material-ui/core/colors'
 import Button from '@material-ui/core/Button'
+import axios from 'axios'
+import { useHttp } from '../hooks/http.hook'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 
 const useStylesLoader = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,7 +51,6 @@ const useStyles = makeStyles(() =>
     container: {
       // display: 'flex',
       // flexDirection: 'column'
-      
     },
     details: {
       display: 'flex',
@@ -82,10 +84,41 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const PendingCard = () => {
-  const [status, setStatus] = useState('ждем ответа')
-  
+const useStores = () => {
+  return useContext(MobXProviderContext)
+}
+
+const useUserData = () => {
+  const {store} = useStores()  
+  return useObserver(() => store)
+}
+
+export const PendingCard = observer(() => {
+  const [status, setStatus] = useState('Ждем ответа от такси')
+  const { request } = useHttp()
+
+  const store = useUserData()
+
   const classes = useStyles()
+
+  const handleClick = async (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+  ) => {
+    e.preventDefault()
+    try {
+      const data = await request(
+        '/api/order/user-decline',
+        'POST',
+        {
+          type: 'message',
+          data: {user: store.username },
+        },
+        { 'Content-Type': 'application/json' },
+      )
+      console.log('response data: ', data);
+      
+    } catch (e) {}
+  }
 
   return (
     <Card className={classes.root}>
@@ -140,11 +173,16 @@ export const PendingCard = () => {
             ⠀
           </Typography>
 
-          <Button variant='outlined' size='small' color='primary'>
+          <Button
+            variant='outlined'
+            size='small'
+            color='primary'
+            onClick={handleClick}
+          >
             отменить заявку
           </Button>
         </CardContent>
       </div>
     </Card>
   )
-}
+})

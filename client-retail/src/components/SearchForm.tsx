@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -16,6 +16,7 @@ import Container from '@material-ui/core/Container'
 import { Redirect, useHistory } from 'react-router-dom'
 
 import { useHttp } from '../hooks/http.hook'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 
 const Copyright = () => {
   return (
@@ -50,14 +51,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const SearchForm = () => {
+const useStores = () => {
+  return useContext(MobXProviderContext)
+}
+
+const useUserData = () => {
+  const { store } = useStores()
+  return useObserver(() => store)
+}
+
+export const SearchForm = observer(() => {
   const { request } = useHttp()
   const history = useHistory()
+
+  const store = useUserData()
 
   interface IForm {
     from: string
     to: string
     phone: string
+
     date?: Date | string
   }
 
@@ -81,7 +94,7 @@ export const SearchForm = () => {
       'POST',
       {
         type: 'message',
-        data: { ...form, date: new Date() },
+        data: { ...form, user: store.username, date: new Date() },
       },
       { 'Content-Type': 'application/json' },
     )
@@ -192,4 +205,4 @@ export const SearchForm = () => {
       </Box>
     </Container>
   )
-}
+})

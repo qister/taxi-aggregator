@@ -1,20 +1,13 @@
 import WebSoc from 'ws'
 import express from 'express'
 import config from 'config'
+import mongoose from 'mongoose'
 
 const server = new WebSoc.Server({ port: 8000 })
 const businessServer = new WebSoc.Server({ port: 8001 })
 
 export const clients = new Set()
 export const businessClients = new Set()
-
-const app = express()
-const PORT: number = config.get('port') || 5005
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.use('/api/order', require('./routes/orders.routes'))
 
 server.on('connection', (ws) => {
   clients.add(ws)
@@ -49,15 +42,36 @@ businessServer.on('connection', (ws) => {
   ws.send('Hello', {}, () => console.log('Business Client connected'))
 })
 
-export const businessClients_ = businessClients
+interface IOrder {
+  id: number
+  user: string
+  status: 'pending' | 'accepted' | 'finished' | 'rejected'
+}
+
+const app = express()
+const PORT: number = config.get('port') || 5005
+const URI: string = config.get('mongoUri')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/api/order', require('./routes/orders.routes'))
 
 const start = async () => {
   try {
+    await mongoose.connect(URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    })
+    console.log('монга подключена ', new Date().toLocaleDateString())
+
     app.listen(PORT, () =>
       console.log(`App has been started on port ${PORT}...`),
     )
   } catch (e) {
     console.log('server error: ', e)
+    process.exit(1)
   }
 }
 

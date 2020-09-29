@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -10,7 +10,7 @@ import { yellow } from '@material-ui/core/colors'
 
 import { Button, Grid } from '@material-ui/core'
 import { IOrder } from '../../mobx/ordersStore'
-import { observer } from 'mobx-react'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -44,20 +44,34 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const TestGridCardAccepted = observer(({ from, to, phone, date, id }: IOrder) => {
+const useStores = () => {
+  return useContext(MobXProviderContext)
+}
+
+const useUserData = () => {
+  const { store } = useStores()
+  return useObserver( () => ({
+    store: store.ordersStore
+  }))
+}
+
+export const TestGridCardAccepted = observer(({ from, to, phone, date, id, handleChange }: any) => {
   const classes = useStyles()
 
-  // const addOrderToAcceptedList = () => {
-  //   client.send(
-  //     JSON.stringify({
-  //       type: 'message',
-  //       msg: 'order accepted',
-  //     }),
-  //   )
-  // }
+  const attributes = {
+    from,
+    to,
+    phone,
+    date,
+    id,
+  }
+
+  const {store} = useUserData()
+
 
   const handleAccept = () => {
-
+    
+    store.completeOrder(attributes)
   }
   
   const [timeDifference, setTimeDifference] = useState('Времени прошло')
@@ -117,8 +131,8 @@ export const TestGridCardAccepted = observer(({ from, to, phone, date, id }: IOr
 
         <Grid item></Grid>
         <CardContent className={classes.item}>
-          <Button size='small' variant='outlined'>
-            id: {id}
+          <Button size='small' variant='outlined' onClick={handleAccept}>
+            Завершить заявку с id = {id}
           </Button>
         </CardContent>
         {/* <Grid item >

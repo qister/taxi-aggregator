@@ -11,7 +11,7 @@ import { Button, Grid } from '@material-ui/core'
 
 import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 import { IOrder } from '../../mobx/ordersStore'
-// import { acceptOrder } from '../redux/actions'
+
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -71,8 +71,9 @@ export const TestGridCard_ = observer(
     const classes = useStyles()
 
     const handleAccept = () => {
-      // acceptOrder(attributes)
-      store.moveToAccepted(attributes)
+      
+      
+      store.acceptOrder(attributes)
 
       // client.send(
       //   JSON.stringify({
