@@ -121,7 +121,10 @@ export const BadgeAvatars = ({ connected }: any) => {
         }}
         variant='dot'
       >
-        <Avatar alt='Username' src='/static/images/avatar/1.jpg' />
+        <Avatar
+          alt='Username'
+          // src='/static/images/avatar/1.jpg'
+        />
       </StyledBadge>
     </div>
   )

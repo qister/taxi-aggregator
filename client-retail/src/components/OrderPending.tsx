@@ -94,7 +94,17 @@ const useUserData = () => {
 }
 
 export const PendingCard = observer(() => {
+
   const [status, setStatus] = useState('Ждем ответа от такси')
+
+  // navigator.clipboard.writeText('Hello Alligator!')
+  // .then(() => {
+  //   // Получилось!
+  // })
+  // .catch(err => {
+  //   console.log('Something went wrong', err);
+  // });
+
   const { request } = useHttp()
 
   const store = useUserData()
@@ -165,7 +175,7 @@ export const PendingCard = observer(() => {
             Статус
           </Typography>
           <Typography component='h5' variant='h5'>
-            {status}
+            {store.orderStatus}
           </Typography>
         </CardContent>
         <CardContent className={classes.item}>

@@ -34,7 +34,7 @@ export const MainContainer = observer(() => {
           
           const messageParsed = JSON.parse(message.data)
           const dataFromServer: any = messageParsed.data
-          console.log('got reply! ', dataFromServer)
+          // console.log('got reply! ', dataFromServer)
           if (messageParsed.type === 'message') {
             ordersStore.addToPending(dataFromServer)
           }

@@ -68,6 +68,8 @@ export const TestGridCardAccepted = observer(({ from, to, phone, date, id, handl
 
   const {store} = useUserData()
 
+  const timeOrderAccepted = new Date(date)
+
 
   const handleAccept = () => {
     
@@ -77,15 +79,16 @@ export const TestGridCardAccepted = observer(({ from, to, phone, date, id, handl
   const [timeDifference, setTimeDifference] = useState('Времени прошло')
 
   useEffect(() => {
-    setInterval(() => {
+    const setDiff = () => {
       const now = new Date()
-      const timeOrderAccepted = new Date(date)
-
+      
       const diff = new Date(
         now.getTime() - timeOrderAccepted.getTime(),
       ).toLocaleTimeString('ru-Ru', { timeZone: 'UTC' })
-      return setTimeDifference(diff)
-    }, 1000)
+      setTimeDifference(diff)
+    }
+    const interval = setInterval(setDiff, 1000)
+    return () => clearInterval(interval)
   }, [])
 
   // const startDate = new Date(date)

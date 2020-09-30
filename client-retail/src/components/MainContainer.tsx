@@ -1,9 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { w3cwebsocket as W3CWebSocket } from 'websocket'
+import { MobXProviderContext, observer, useObserver } from 'mobx-react'
 import { PendingCard } from './OrderPending'
 import { SearchForm } from './SearchForm'
 
-export const MainContainer = () => {
+const useStores = () => {
+  return useContext(MobXProviderContext)
+}
+
+const useUserData = () => {
+  const { store } = useStores() 
+  return useObserver( () => ({
+    
+    appStore: store,
+  }))
+}
+
+export const MainContainer = observer(() => {
+
+  const {appStore} = useUserData()
+
+  console.log('AppStore: ', appStore.username);
+  
+
   useEffect(() => {
     const wsConnect = () => {
       const client = new W3CWebSocket('ws://localhost:8000')
@@ -14,7 +33,11 @@ export const MainContainer = () => {
       }
 
       client.onmessage = (message) => {
-        console.log('Message: ', message);
+        console.log('Message data: ', message.data)
+
+        if (message.data === 'accepted') {
+          appStore.setOrderStatus('accepted')
+        }
         
       }
 
@@ -47,4 +70,4 @@ export const MainContainer = () => {
       <SearchForm />
     </>
   )
-}
+})

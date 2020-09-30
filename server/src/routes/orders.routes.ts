@@ -28,13 +28,13 @@ let id = 1
 
 router.post('/new', async (req, res) => {
   try {
-    console.log('req.body: ', req.body);
-    
+    console.log('req.body: ', req.body)
+
     const message = {
       ...req.body,
       data: { ...req.body.data, id },
     }
-    
+
     const stringMessage = JSON.stringify(message)
 
     // currentOrders.push({
@@ -47,7 +47,7 @@ router.post('/new', async (req, res) => {
       id,
       ...req.body.data,
       status: 'pending',
-      acceptedBy: ''
+      acceptedBy: '',
     })
 
     await newOrder.save()
@@ -66,17 +66,20 @@ router.post('/new', async (req, res) => {
 router.post('/accept', async (req, res) => {
   try {
     // console.log('req: ', req.body.id)
-    const {id, user} = req.body
-    console.log('user, id', user, id);
-    
+    const { id, user } = req.body
+    console.log('user, id', user, id)
 
     await Order.updateOne(
       { id: id },
       {
         status: 'accepted',
-        acceptedBy: user
-      }
+        acceptedBy: user,
+      },
     )
+
+    clients.forEach((client: any) => {
+      if (client.readyState === WebSoc.OPEN) client.send('accepted')
+    })
 
     // currentOrders = currentOrders.map(i => i)
 
@@ -99,15 +102,15 @@ router.post('/accept', async (req, res) => {
 router.post('/complete', async (req, res) => {
   try {
     // console.log('req: ', req.body.id)
-    const {id, user} = req.body
-    console.log('user, id to complete', user, id);
-    
+    const { id, user } = req.body
+    console.log('user, id to complete', user, id)
+
     await Order.updateOne(
       { id: id },
       {
         status: 'completed',
-        completedBy: user
-      }
+        completedBy: user,
+      },
     )
 
     // currentOrders = currentOrders.map(i => i)
@@ -127,6 +130,5 @@ router.post('/complete', async (req, res) => {
     console.log('Hook Error', e.message)
   }
 })
-
 
 module.exports = router
