@@ -81,18 +81,6 @@ router.post('/accept', async (req, res) => {
       if (client.readyState === WebSoc.OPEN) client.send('accepted')
     })
 
-    // currentOrders = currentOrders.map(i => i)
-
-    // const message = {
-    //   ...req.body,
-    //   data: { ...req.body.data, id },
-    // }
-    // id++
-    // const stringMessage = JSON.stringify(message)
-    // businessClients.forEach((client: any) => {
-    //   if (client.readyState === WebSoc.OPEN) client.send(stringMessage)
-    // })
-
     res.status(200).json(`order accepted`)
   } catch (e) {
     console.log('Hook Error', e.message)
@@ -113,19 +101,65 @@ router.post('/complete', async (req, res) => {
       },
     )
 
-    // currentOrders = currentOrders.map(i => i)
+    res.status(200).json(`order completed`)
+  } catch (e) {
+    console.log('Hook Error', e.message)
+  }
+})
 
-    // const message = {
-    //   ...req.body,
-    //   data: { ...req.body.data, id },
-    // }
-    // id++
-    // const stringMessage = JSON.stringify(message)
+router.post('/user-decline', async (req, res) => {
+  try {
+    console.log('req body: ', req.body)
+    const { user } = req.body.data
+
+    const order = await Order.findOne({user, status: 'pending'})
+
+    console.log('Order: ',order);
+    
+
+    const message = {
+      ...req.body,
+      data: { ...req.body.data, id: order.id },
+    }
+
+    const stringMessage = JSON.stringify(message)
+
+    console.log('stringMessage: ', stringMessage);
+    
+
+    businessClients.forEach((client: any) => {
+      if (client.readyState === WebSoc.OPEN) client.send(stringMessage)
+    })
+
+    await Order.updateOne({user, id: order.id}, {
+      status: 'declined by user',
+    })
+
+    // console.log('user to decline', user )
+
+    // await Order.updateOne(
+    //   { user, status: 'pending' },
+    //   {
+    //     status: 'rejected by user',
+    //     completedBy: user,
+    //   },
+    // )
+
+    // const newOrder = new Order({
+    //   id,
+    //   ...req.body.data,
+    //   status: 'pending',
+    //   acceptedBy: '',
+    // })
+
+    // await newOrder.save()
+
     // businessClients.forEach((client: any) => {
     //   if (client.readyState === WebSoc.OPEN) client.send(stringMessage)
     // })
+    // id++
 
-    res.status(200).json(`order completed`)
+    res.status(200).json(`order declined succesfully`)
   } catch (e) {
     console.log('Hook Error', e.message)
   }

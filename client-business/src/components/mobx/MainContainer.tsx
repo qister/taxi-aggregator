@@ -29,15 +29,27 @@ export const MainContainer = observer(() => {
       }
 
       client.onmessage = (message) => {
+
+        console.log('message', message);
+        
+
         if (typeof message.data === 'string') {
           console.log('Message data: ', message.data);
           
           const messageParsed = JSON.parse(message.data)
           const dataFromServer: any = messageParsed.data
           // console.log('got reply! ', dataFromServer)
-          if (messageParsed.type === 'message') {
-            ordersStore.addToPending(dataFromServer)
+          switch (messageParsed.type) {
+            case 'message':
+              ordersStore.addToPending(dataFromServer)
+              break
+            case 'decline':
+              console.log('dataFromServer to decline', dataFromServer);
+              
+              ordersStore.deleteFromPending(dataFromServer)
+              break
           }
+          
         }
       }
 

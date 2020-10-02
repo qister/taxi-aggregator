@@ -120,7 +120,7 @@ export const PendingCard = observer(() => {
         '/api/order/user-decline',
         'POST',
         {
-          type: 'message',
+          type: 'decline',
           data: {user: store.username },
         },
         { 'Content-Type': 'application/json' },

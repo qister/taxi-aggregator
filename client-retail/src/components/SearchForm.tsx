@@ -88,30 +88,23 @@ export const SearchForm = observer(() => {
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
   ) => {
     event.preventDefault()
-
-    const data = await request(
-      '/api/order/new',
-      'POST',
-      {
-        type: 'message',
-        data: { ...form, user: store.username, date: new Date() },
-      },
-      { 'Content-Type': 'application/json' },
-    )
-    console.log('Response: ', data)
-
-    // setForm({ ...form, [event.target.name]: event.target.value })
-
-    // for( let i = 0; i < 1; i++) {
-    //   setTimeout( () => {
-    //     client.send(
-    //       JSON.stringify({
-    //         type: 'message',
-    //         data: {...form, date: new Date}
-    //       }),
-    //     )
-    //   }, Math.random()*i*2000)
-    // }
+    try {
+      store.setOrderStatus('sended')
+      const data = await request(
+        '/api/order/new',
+        'POST',
+        {
+          type: 'message',
+          data: { ...form, user: store.username, date: new Date() },
+        },
+        { 'Content-Type': 'application/json' },
+      )
+      store.setOrderStatus('deliverer')
+      
+      console.log('Response: ', data)
+    } catch (e) {
+      console.log('request message: ', e.message)
+    }
 
     setForm({
       from: '',
