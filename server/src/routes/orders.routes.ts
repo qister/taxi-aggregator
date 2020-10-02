@@ -112,10 +112,7 @@ router.post('/user-decline', async (req, res) => {
     console.log('req body: ', req.body)
     const { user } = req.body.data
 
-    const order = await Order.findOne({user, status: 'pending'})
-
-    console.log('Order: ',order);
-    
+    const order = await Order.findOne({ user, status: 'pending' })
 
     const message = {
       ...req.body,
@@ -124,41 +121,17 @@ router.post('/user-decline', async (req, res) => {
 
     const stringMessage = JSON.stringify(message)
 
-    console.log('stringMessage: ', stringMessage);
-    
-
     businessClients.forEach((client: any) => {
       if (client.readyState === WebSoc.OPEN) client.send(stringMessage)
     })
 
-    await Order.updateOne({user, id: order.id}, {
-      status: 'declined by user',
-    })
-
-    // console.log('user to decline', user )
-
-    // await Order.updateOne(
-    //   { user, status: 'pending' },
-    //   {
-    //     status: 'rejected by user',
-    //     completedBy: user,
-    //   },
-    // )
-
-    // const newOrder = new Order({
-    //   id,
-    //   ...req.body.data,
-    //   status: 'pending',
-    //   acceptedBy: '',
-    // })
-
-    // await newOrder.save()
-
-    // businessClients.forEach((client: any) => {
-    //   if (client.readyState === WebSoc.OPEN) client.send(stringMessage)
-    // })
-    // id++
-
+    await Order.updateOne(
+      { user, id: order.id },
+      {
+        status: 'declined by user',
+      },
+    )
+    
     res.status(200).json(`order declined succesfully`)
   } catch (e) {
     console.log('Hook Error', e.message)
